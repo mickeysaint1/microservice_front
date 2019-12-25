@@ -1,29 +1,47 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Router from 'vue-router'
+import login from '@/components/login.vue'
+import home from '@/components/home.vue'
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
-const routes = [
+const routers = [
   {
-    path: '/',
-    name: 'home',
-    component: Home
+    path: '/login',
+    name: 'login',
+    component: login
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/',
+    name: 'root',
+    component: home
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: home
   }
-]
+];
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+const router = new Router({
+  routes:routers
+});
+
+/**
+ * to:表示目标路由
+ * from:表示来源路由
+ * next:表示执行下一步操作
+ */
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') { // 当路由为login时就直接下一步操作
+    next();
+  } else { // 否则就需要判断
+    if(sessionStorage.userData){  // 如果有用户名就进行下一步操作
+      next()
+    }else{
+      next({path: '/login'})  // 没有用户名就跳转到login页面
+    }
+  }
 })
 
-export default router
+export default router;
