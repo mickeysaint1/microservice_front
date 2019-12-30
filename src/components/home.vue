@@ -114,7 +114,6 @@
         },
         methods: {
             addTab(menuName, menuComponent) {
-                window.console.log(menuComponent);
                 let newTabName = ++this.tabIndex + '';
                 this.editableTabs.push({
                     title: menuName,
