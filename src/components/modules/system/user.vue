@@ -65,10 +65,10 @@
                 width="30%">
             <el-form :model="userDialogFormData" :rules="userDialogRules" ref="userDialogForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="用户账号" prop="username">
-                    <el-input v-model="userDialogFormData.username"></el-input>
+                    <el-input v-model="userDialogFormData.username" :disabled="userDialogFormData.username_disabled"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="userDialogFormData.password" show-password></el-input>
+                    <el-input v-model="userDialogFormData.password" show-password  :disabled="userDialogFormData.password_disabled"></el-input>
                 </el-form-item>
                 <el-form-item label="用户姓名" prop="userFullName">
                     <el-input v-model="userDialogFormData.userFullName"></el-input>
@@ -79,7 +79,7 @@
                                  @change="changeOrg"></el-cascader>
                 </el-form-item>
                 <el-form-item label="所属角色">
-                    <el-select v-model="userDialogFormData.roleIds" multiple placeholder="请选择">
+                    <el-select v-model="userDialogFormData.roleIds" multiple collapse-tags placeholder="请选择">
                         <el-option
                                 v-for="item in userDialogFormData.roleOptions"
                                 :key="item.id"
@@ -115,7 +115,9 @@
                 userTableDataTotal:0,
                 userDialogFormData:{
                     username:"",
+                    username_disabled:false,
                     password:"",
+                    password_disabled:false,
                     userFullName:"",
                     orgIds:[],
                     roleIds:[],
@@ -142,6 +144,9 @@
         created: function () {
             this.height = window.innerHeight-145;
             this.userTableHeight = this.height-80-50;
+        },
+        mounted: function() {
+            this.getUserList(1);
         },
         methods: {
             getUserList(pageIndex) {
@@ -172,19 +177,92 @@
                 this.userDialogTitle = "新增用户";
                 this.userDialogFormData.id = null;
                 this.userDialogFormData.username = "";
+                this.userDialogFormData.username_disabled = false;
+                this.userDialogFormData.userFullName = "";
                 this.userDialogFormData.password = "";
+                this.userDialogFormData.password_disabled = false;
                 this.userDialogFormData.orgIds = [];
                 this.userDialogFormData.roleIds = [];
                 this.userDialogVisible = true;
             },
             editUser() {
+                this.userDialogTitle = "修改用户";
+                if (this.$refs.userTable.selection && this.$refs.userTable.selection.length == 0) {
+                    this.$message({
+                        message: "请选择要修改的数据",
+                        type: 'info'
+                    });
+                    return;
+                }
 
+                if (this.$refs.userTable.selection && this.$refs.userTable.selection.length > 1) {
+                    this.$message({
+                        message: "只能选择一条数据",
+                        type: 'info'
+                    });
+                    return;
+                }
+
+                console.log(this.$refs.userTable.selection[0]);
+                this.userDialogFormData.id = this.$refs.userTable.selection[0]["id"];
+                this.userDialogFormData.username = this.$refs.userTable.selection[0]["username"];
+                this.userDialogFormData.username_disabled = true;
+                this.userDialogFormData.password_disabled = true;
+                this.userDialogFormData.password = "123456";
+                this.userDialogFormData.userFullName = this.$refs.userTable.selection[0]["userFullName"];
+                this.userDialogFormData.orgIds = JSON.parse(this.$refs.userTable.selection[0]["orgIds"]);
+                let me = this;
+                this.changeOrg(null, function() {
+                    me.userDialogFormData.roleIds = JSON.parse(me.$refs.userTable.selection[0]["roleIds"]);
+                });
+
+                this.userDialogVisible = true;
             },
             deleteUser() {
+                if (this.$refs.userTable.selection && this.$refs.userTable.selection.length == 0) {
+                    this.$message({
+                        message: "请选择要删除的数据",
+                        type: 'info'
+                    });
+                    return;
+                }
 
+                let ids = [];
+                for (let i=0; i<this.$refs.userTable.selection.length; i++) {
+                    ids.push(this.$refs.userTable.selection[i]["id"]);
+                }
+
+                this.$confirm('此操作将删除选定的用户, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.axios
+                        .post("/service-user/user/delete",ids)
+                        .then(resp => {
+                            if (resp.data && resp.data.success) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                                this.getUserList(1);
+                            } else {
+                                this.$message({
+                                    showClose: true,
+                                    message: resp.data.message,
+                                    type: 'error'
+                                });
+                            }
+                        });
+
+                }).catch(() => {
+                    // this.$message({
+                    //     type: 'info',
+                    //     message: '已取消删除'
+                    // });
+                });
             },
             saveUserData() {
-                console.log(123);
                 this.$refs["userDialogForm"].validate((valid) => {
                     if (valid) {
                         this.axios
@@ -203,6 +281,7 @@
                                         message: "保存成功",
                                         type: 'info'
                                     });
+                                    this.userDialogVisible = false;
                                 } else {
                                     this.$message({
                                         showClose: true,
@@ -211,7 +290,6 @@
                                     });
                                 }
                             });
-                        this.userDialogVisible = false;
                     } else {
                         return false;
                     }
@@ -220,8 +298,9 @@
             changePage(pageIndex) {
                 this.getUserList(pageIndex);
             },
-            changeOrg() {
+            changeOrg(paramFirst, callback) {
                 this.userDialogFormData.roleOptions = [];
+                this.userDialogFormData.roleIds = [];
                 this.axios
                     .post("/service-user/role/getListData",{
                         orgId:JSON.stringify(this.userDialogFormData.orgIds),
@@ -235,6 +314,10 @@
                                 for (let i=0; i<resp.data.data.dataList.length; i++) {
                                     this.userDialogFormData.roleOptions.push(resp.data.data.dataList[i]);
                                 }
+                            }
+
+                            if (callback) {
+                                callback();
                             }
                         } else {
                             this.$message({

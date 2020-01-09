@@ -114,6 +114,11 @@
         },
         methods: {
             addTab(menuName, menuComponent) {
+                let thisTab = this.getTabByName(menuName);
+                if (thisTab != null) {
+                    this.editableTabsValue = thisTab.name;
+                    return;
+                }
                 let newTabName = ++this.tabIndex + '';
                 this.editableTabs.push({
                     title: menuName,
@@ -141,6 +146,16 @@
 
                 this.editableTabsValue = activeName;
                 this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+            },
+            getTabByName(tabName) {
+                let ret = null;
+                this.editableTabs.forEach((tab, index) => {
+                    if (tab.title == tabName) {
+                        ret = tab;
+                    }
+                });
+                return ret;
+
             },
             doLogout() {
                 sessionStorage.userData = null;
