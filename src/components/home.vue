@@ -1,7 +1,7 @@
 <template>
         <el-container style="height:100%">
             <el-header style="padding:0px; background-color:#444444">
-                <div style="width:80px; height:60px; float:left; padding-left:50px; line-height:60px; vertical-align:middle; color:white; text-align:left">LOGO</div>
+                <div style="width:80px; height:60px; float:left; padding-left:50px; line-height:60px; vertical-align:middle; color:white; text-align:left">LOGO</div>i
                 <div style="width:300px; height:56px; float:left; line-height:56px; vertical-align:middle; color:white; text-align:left; font-size:20px">啊啊啊啊管理平台</div>
                 <div style="width:300px; height:60px; float:right; color:white; line-height:60px; vertical-align:middle; text-align:right; padding-right:60px">
                     <span>欢迎您</span><span style="margin-left:10px">{{username}}</span>
@@ -94,6 +94,7 @@
     import menua from '@/components/modules/system/menua.vue';
     import role from '@/components/modules/system/role.vue';
     import user from '@/components/modules/system/user.vue';
+    import sysconfig from '@/components/modules/system/config.vue';
 
     export default {
         name: "home",
