@@ -71,8 +71,8 @@
 }
 
 .login-box .sys-logo{
-    height:64px;
-    width:64px;
+    height:48px;
+    width:48px;
     float:left;
     background-image: url(../assets/logo.png);
 
@@ -81,13 +81,13 @@
 .login-box .sys-title{
     font-size:32px;
     color:#ffffff;
-    height:64px;
-    line-height:64px;
+    height:48px;
+    line-height:48px;
     vertical-align:middle;
 }
 
 .login-box .login-item {
-    height:64px;
+    height:48px;
 }
 .login-box .error-message {
     color:red;

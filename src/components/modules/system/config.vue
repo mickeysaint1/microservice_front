@@ -2,11 +2,11 @@
     <div v-bind:style="{ height:height+'px' }">
         <el-form :inline="true" :model="sysconfigSearchForm" class="demo-form-inline">
 
-            <el-form-item label="配置项代码">
-                <el-input v-model="sysconfigSearchForm.configKey" placeholder="配置项代码"></el-input>
+            <el-form-item label="参数代码">
+                <el-input v-model="sysconfigSearchForm.configKey" placeholder="参数代码"></el-input>
             </el-form-item>
-            <el-form-item label="配置项名称">
-                <el-input v-model="sysconfigSearchForm.configName" placeholder="配置项名称"></el-input>
+            <el-form-item label="参数名称">
+                <el-input v-model="sysconfigSearchForm.configName" placeholder="参数名称"></el-input>
             </el-form-item>
 
             <el-form-item>
@@ -31,15 +31,15 @@
                 </el-table-column>
                 <el-table-column
                         prop="configKey"
-                        label="配置项代码" width="200">
+                        label="参数代码" width="200">
                 </el-table-column>
                 <el-table-column
                         prop="configName"
-                        label="配置项名称" width="200">
+                        label="参数名称" width="200">
                 </el-table-column>
                 <el-table-column
                         prop="configValue"
-                        label="配置项值" width="100">
+                        label="参数值" width="100">
                 </el-table-column>
                 <el-table-column
                         prop="remark"
@@ -59,13 +59,13 @@
                 :visible.sync="sysconfigDialogVisible"
                 width="30%">
             <el-form :model="sysconfigDialogFormData" :rules="sysconfigDialogRules" ref="sysconfigDialogForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="配置项代码" prop="configKey">
+                <el-form-item label="参数代码" prop="configKey">
                     <el-input v-model="sysconfigDialogFormData.configKey" :disabled="sysconfigDialogFormData.configKey_disabled"></el-input>
                 </el-form-item>
-                <el-form-item label="配置项名称" prop="configName">
+                <el-form-item label="参数名称" prop="configName">
                     <el-input v-model="sysconfigDialogFormData.configName"></el-input>
                 </el-form-item>
-                <el-form-item label="配置项值" prop="configValue">
+                <el-form-item label="参数值" prop="configValue">
                     <el-input v-model="sysconfigDialogFormData.configValue"></el-input>
                 </el-form-item>
                 <el-form-item label="备注" prop="remark">
@@ -101,16 +101,16 @@
                     remark:""
                 },
                 sysconfigDialogVisible:false,
-                sysconfigDialogTitle:"新增配置",
+                sysconfigDialogTitle:"新增参数",
                 sysconfigDialogRules:{
                     configKey: [
-                        { required: true, message: '请输入配置项代码', trigger: 'blur' }
+                        { required: true, message: '请输入参数代码', trigger: 'blur' }
                     ],
                     configName: [
-                        { required: true, message: '请输入配置项名称', trigger: 'blur' }
+                        { required: true, message: '请输入参数名称', trigger: 'blur' }
                     ],
                     configValue: [
-                        { required: true, message: '请输入配置项值', trigger: 'blur' }
+                        { required: true, message: '请输入参数值', trigger: 'blur' }
                     ]
                 }
             }
@@ -147,16 +147,17 @@
                 this.$refs.sysconfigTable.toggleRowSelection(row);
             },
             addSysconfig() {
-                this.sysconfigDialogTitle = "新增配置";
+                this.sysconfigDialogTitle = "新增参数";
                 this.sysconfigDialogFormData.id = null;
                 this.sysconfigDialogFormData.configKey = "";
                 this.sysconfigDialogFormData.configKey_disabled = false;
                 this.sysconfigDialogFormData.configName = "";
+                this.sysconfigDialogFormData.configValue = "";
                 this.sysconfigDialogFormData.remark = "";
                 this.sysconfigDialogVisible = true;
             },
             editSysconfig() {
-                this.sysconfigDialogTitle = "修改配置";
+                this.sysconfigDialogTitle = "修改参数";
                 if (this.$refs.sysconfigTable.selection && this.$refs.sysconfigTable.selection.length == 0) {
                     this.$message({
                         message: "请选择要修改的数据",
@@ -177,7 +178,8 @@
                 this.sysconfigDialogFormData.configKey = this.$refs.sysconfigTable.selection[0]["configKey"];
                 this.sysconfigDialogFormData.configKey_disabled = true;
                 this.sysconfigDialogFormData.configName = this.$refs.sysconfigTable.selection[0]["configName"];
-                this.sysconfigDialogFormData.remark = JSON.parse(this.$refs.sysconfigTable.selection[0]["remark"]);
+                this.sysconfigDialogFormData.configValue = this.$refs.sysconfigTable.selection[0]["configValue"];
+                this.sysconfigDialogFormData.remark = this.$refs.sysconfigTable.selection[0]["remark"];
 
                 this.sysconfigDialogVisible = true;
             },
@@ -195,7 +197,7 @@
                     ids.push(this.$refs.sysconfigTable.selection[i]["id"]);
                 }
 
-                this.$confirm('此操作将删除选定的配置, 是否继续?', '提示', {
+                this.$confirm('此操作将删除选定的参数, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
