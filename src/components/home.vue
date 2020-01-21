@@ -98,7 +98,7 @@
 
     export default {
         name: "home",
-        components: {firstPage, org, menua, role, user},
+        components: {firstPage, org, menua, role, user, sysconfig},
         data() {
             const userData = JSON.parse(sessionStorage.userData);
             return {

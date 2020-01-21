@@ -63,7 +63,7 @@
                     <el-input v-model="sysconfigDialogFormData.configKey" :disabled="sysconfigDialogFormData.configKey_disabled"></el-input>
                 </el-form-item>
                 <el-form-item label="配置项名称" prop="configName">
-                    <el-input v-model="sysconfigDialogFormData.configName" show-password></el-input>
+                    <el-input v-model="sysconfigDialogFormData.configName"></el-input>
                 </el-form-item>
                 <el-form-item label="配置项值" prop="configValue">
                     <el-input v-model="sysconfigDialogFormData.configValue"></el-input>
