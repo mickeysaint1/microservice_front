@@ -90,15 +90,26 @@
 
 <script>
     import firstPage from '@/components/modules/firstPage.vue';
-    import org from '@/components/modules/system/org.vue';
-    import menua from '@/components/modules/system/menua.vue';
-    import role from '@/components/modules/system/role.vue';
-    import user from '@/components/modules/system/user.vue';
-    import sysconfig from '@/components/modules/system/config.vue';
+    // import org from '@/components/modules/system/org.vue';
+    // import menua from '@/components/modules/system/menua.vue';
+    // import role from '@/components/modules/system/role.vue';
+    // import user from '@/components/modules/system/user.vue';
+    // import sysconfig from '@/components/modules/system/config.vue';
+    // import dictType from '@/components/modules/system/dictType.vue';
+    // import dictEntry from '@/components/modules/system/dictEntry.vue';
 
     export default {
         name: "home",
-        components: {firstPage, org, menua, role, user, sysconfig},
+        components: {
+            firstPage:()=>import('@/components/modules/firstPage.vue'),
+            org:()=>import('@/components/modules/system/org.vue'),
+            menua:()=>import('@/components/modules/system/menua.vue'),
+            role:()=>import('@/components/modules/system/role.vue'),
+            user:()=>import('@/components/modules/system/user.vue'),
+            sysconfig:()=>import('@/components/modules/system/config.vue'),
+            dictType:()=>import('@/components/modules/system/dictType.vue'),
+            dictEntry:()=>import('@/components/modules/system/dictEntry.vue')
+        },
         data() {
             const userData = JSON.parse(sessionStorage.userData);
             return {
