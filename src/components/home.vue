@@ -170,8 +170,8 @@
 
             },
             doLogout() {
-                sessionStorage.userData = null;
-                sessionStorage.accessToken = null;
+                sessionStorage.removeItem("userData");
+                sessionStorage.removeItem("accessToken");
                 this.$router.push("/login");
             }
         }
