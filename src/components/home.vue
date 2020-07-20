@@ -108,7 +108,8 @@
             user:()=>import('@/components/modules/system/user.vue'),
             sysconfig:()=>import('@/components/modules/system/config.vue'),
             dictType:()=>import('@/components/modules/system/dictType.vue'),
-            dictEntry:()=>import('@/components/modules/system/dictEntry.vue')
+            dictEntry:()=>import('@/components/modules/system/dictEntry.vue'),
+            job:()=>import('@/components/modules/system/job.vue')
         },
         data() {
             const userData = JSON.parse(sessionStorage.userData);

@@ -8,7 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(Element)
 
-//axios.defaults.baseURL = "http://localhost/api/";
+// axios.defaults.baseURL = "http://localhost/api/";
 axios.defaults.baseURL = "http://localhost:8040/";
 Vue.prototype.axios = axios;
 
