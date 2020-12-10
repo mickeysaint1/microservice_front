@@ -60,6 +60,8 @@
 
 <script>
 
+    import * as orgApi from "@/js/api/org.js";
+
     export default {
         name: "org",
         data:function() {
@@ -104,17 +106,17 @@
             getOrgTreeData() {
                 this.orgTreeData = [];
 
-                this.axios
-                    .post("/service-user/org/findTreeById?id=0",{})
-                    .then(resp => {
-                        if (resp.data && resp.data.data && resp.data.success) {
-                            if (resp.data.data.length > 0) {
-                                for (let i=0; i<resp.data.data.length; i++) {
-                                    this.orgTreeData.push(resp.data.data[i]);
+                orgApi.getTreeById(0).then(
+                        res => {
+                            if (res.success) {
+                                if (res.data.length > 0) {
+                                    for (let i=0; i<res.data.length; i++) {
+                                        this.orgTreeData.push(res.data[i]);
+                                    }
                                 }
                             }
                         }
-                    });
+                )
             },
             getOrgListData(parentOrgId) {
                 this.orgTableData = [];
