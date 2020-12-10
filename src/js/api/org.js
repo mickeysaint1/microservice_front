@@ -6,3 +6,10 @@ export function getTreeById(id) {
 		method: "post"
 	});
 }
+
+export function getListDataByParentId(parentId) {
+	return request({
+		url: "/service-user/org/getListDataByParentId?parentId=" + parentId,
+		method: "post"
+	});
+}
