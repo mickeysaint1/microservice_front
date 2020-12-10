@@ -13,6 +13,9 @@
 
 <script>
 
+    import * as userApi from "@/js/api/user.js";
+    import * as cookieApi from "@/js/utils/cookie.js";
+
     const loginBgSrc = require('../assets/login_bg.jpg')
     export default {
         name: "login",
@@ -40,18 +43,25 @@
                     return;
                 }
 
-                this.axios
-                    .post("/service-oauth2/oauth2/login",{username:this.username, password:this.password})
-                    .then(resp => {
-                        if (resp.data && resp.data.data && resp.data.success) {
-                            this.axios.defaults.headers.common["accessToken"] = resp.data.data.accessToken;
-                            sessionStorage.accessToken = resp.data.data.accessToken;
-                            sessionStorage.userData = JSON.stringify(resp.data.data);
-                            this.$router.push("/home");
-                        } else {
-                            this.errorMsg = resp.data.message;
-                        }
-                    });
+                userApi.getUserInfoByUserNamePassword({username:this.username, password:this.password})
+                        .then(resp => {
+                            console.log(resp);
+
+                            if (resp.success) {
+                                localStorage.setItem("accessToken", resp.data.accessToken);
+                                localStorage.setItem("userData", JSON.stringify(resp.data));
+                                sessionStorage.setItem("accessToken", resp.data.accessToken);
+                                sessionStorage.setItem("userData", JSON.stringify(resp.data));
+                                this.axios.headers.accessToken = resp.data.accessToken;
+                                cookieApi.delCookie("accessToken");
+                                setTimeout(function(){
+                                    cookieApi.setCookie("accessToken", resp.data.accessToken);
+                                }, 500);
+                                this.$router.push("/home");
+                            } else {
+                                this.errorMsg = resp.message;
+                            }
+                        });
             },
             drawBg() {
 
