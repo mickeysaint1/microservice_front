@@ -2,7 +2,7 @@
         <el-container style="height:100%">
             <el-header style="padding:0px; background-color:#444444">
                 <div style="width:80px; height:60px; float:left; padding-left:50px; line-height:60px; vertical-align:middle; color:white; text-align:left">LOGO</div>i
-                <div style="width:300px; height:56px; float:left; line-height:56px; vertical-align:middle; color:white; text-align:left; font-size:20px">啊啊啊啊管理平台</div>
+                <div style="width:300px; height:56px; float:left; line-height:56px; vertical-align:middle; color:white; text-align:left; font-size:20px">管理平台</div>
                 <div style="width:300px; height:60px; float:right; color:white; line-height:60px; vertical-align:middle; text-align:right; padding-right:60px">
                     <span>欢迎您</span><span style="margin-left:10px">{{username}}</span>
                     <span style="margin-left:20px"><a @click="doLogout()" href="#" class="logout">注销</a></span>
@@ -30,44 +30,6 @@
                             </el-menu-item-group>
                         </el-submenu>
                     </el-menu>
-                    <!--
-                    <el-menu style="border-right:0px"
-                                default-active="2"
-                                class="el-menu-vertical-demo"
-                                background-color="#444444"
-                                text-color="#fff"
-                                active-text-color="#ffd04b">
-                            <el-submenu index="1">
-                                <template slot="title">
-                                    <i class="el-icon-location"></i>
-                                    <span>导航一</span>
-                                </template>
-                                <el-menu-item-group>
-                                    <el-menu-item index="1-1">选项1</el-menu-item>
-                                    <el-menu-item index="1-2">选项2</el-menu-item>
-                                </el-menu-item-group>
-                                <el-menu-item-group>
-                                    <el-menu-item index="1-3">选项3</el-menu-item>
-                                </el-menu-item-group>
-                                <el-submenu index="1-4">
-                                    <template slot="title">选项4</template>
-                                    <el-menu-item index="1-4-1">选项1</el-menu-item>
-                                </el-submenu>
-                            </el-submenu>
-                            <el-menu-item index="2">
-                                <i class="el-icon-menu"></i>
-                                <span slot="title">导航二</span>
-                            </el-menu-item>
-                            <el-menu-item index="3">
-                                <i class="el-icon-document"></i>
-                                <span slot="title">导航三</span>
-                            </el-menu-item>
-                            <el-menu-item index="4">
-                                <i class="el-icon-setting"></i>
-                                <span slot="title">导航四</span>
-                            </el-menu-item>
-                        </el-menu>
-                        -->
                 </el-aside>
                 <el-container>
                     <el-main style="padding:5px">
@@ -90,15 +52,9 @@
 
 <script>
     import firstPage from '@/components/modules/firstPage.vue';
-    // import org from '@/components/modules/system/org.vue';
-    // import menua from '@/components/modules/system/menua.vue';
-    // import role from '@/components/modules/system/role.vue';
-    // import user from '@/components/modules/system/user.vue';
-    // import sysconfig from '@/components/modules/system/config.vue';
-    // import dictType from '@/components/modules/system/dictType.vue';
-    // import dictEntry from '@/components/modules/system/dictEntry.vue';
 
     import * as cookieApi from "@/js/utils/cookie.js";
+    import * as userApi from "@/js/api/user.js";
 
     export default {
         name: "home",
@@ -114,7 +70,7 @@
             job:()=>import('@/components/modules/system/job.vue')
         },
         data() {
-            const userData = JSON.parse(sessionStorage.userData);
+            const userData = userApi.getUserData();
             return {
                 editableTabsValue: 'firstPage',
                 editableTabs: [{

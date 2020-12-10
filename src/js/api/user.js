@@ -1,4 +1,5 @@
 import request from "@/js/axios-config";
+import router from '@/router'
 
 export function getUserInfoByUserNamePassword(data) {
 	return request({
@@ -6,4 +7,13 @@ export function getUserInfoByUserNamePassword(data) {
 		method: "post",
 		data: data
 	});
+}
+
+export function getUserData() {
+	if (localStorage.getItem("userData") != null) {
+		return JSON.parse(localStorage.getItem("userData"));
+	} else {
+		router.push("/login");
+		return {};
+	}
 }

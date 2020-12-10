@@ -63,7 +63,6 @@
     export default {
         name: "org",
         data:function() {
-            const userData = JSON.parse(sessionStorage.userData);
             return {
                 height:200,
                 orgTableWidth:500,
