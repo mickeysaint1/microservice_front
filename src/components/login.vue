@@ -45,14 +45,11 @@
 
                 userApi.getUserInfoByUserNamePassword({username:this.username, password:this.password})
                         .then(resp => {
-                            console.log(resp);
-
                             if (resp.success) {
                                 localStorage.setItem("accessToken", resp.data.accessToken);
                                 localStorage.setItem("userData", JSON.stringify(resp.data));
                                 sessionStorage.setItem("accessToken", resp.data.accessToken);
                                 sessionStorage.setItem("userData", JSON.stringify(resp.data));
-                                this.axios.headers.accessToken = resp.data.accessToken;
                                 cookieApi.delCookie("accessToken");
                                 setTimeout(function(){
                                     cookieApi.setCookie("accessToken", resp.data.accessToken);
@@ -84,7 +81,7 @@
     height:48px;
     width:48px;
     float:left;
-    background-image: url(../assets/logo.png);
+    /*background-image: url(../assets/logo.png);*/
 
 }
 
@@ -111,7 +108,7 @@
     left:0px;
     top:0px;
     z-index:0;
-    background-image: url(../assets/login_bg.jpg);
+    /*background-image: url(../assets/login_bg.jpg);*/
     background-size: cover;
 }
 </style>

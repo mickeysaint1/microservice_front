@@ -98,6 +98,8 @@
     // import dictType from '@/components/modules/system/dictType.vue';
     // import dictEntry from '@/components/modules/system/dictEntry.vue';
 
+    import * as cookieApi from "@/js/utils/cookie.js";
+
     export default {
         name: "home",
         components: {
@@ -173,6 +175,10 @@
             doLogout() {
                 sessionStorage.removeItem("userData");
                 sessionStorage.removeItem("accessToken");
+                localStorage.removeItem("userData");
+                localStorage.removeItem("accessToken");
+                cookieApi.delCookie("accessToken");
+
                 this.$router.push("/login");
             }
         }
