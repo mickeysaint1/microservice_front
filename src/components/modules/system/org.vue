@@ -168,57 +168,41 @@ export default {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning",
-            })
-                .then(() => {
-                    this.axios.post("/service-user/org/delete", ids).then((resp) => {
-                        if (resp.data && resp.data.success) {
-                            this.$message({
-                                type: "success",
-                                message: "删除成功!",
-                            });
-                            this.getOrgListData(this.parentOrgId);
-                            this.getOrgTreeData();
-                        } else {
-                            this.$message({
-                                showClose: true,
-                                message: resp.data.message,
-                                type: "error",
-                            });
+            }).then(() => {
+                    orgApi.deleteOrg(ids).then(
+                        res => {
+                            if (res.success) {
+                                this.$message({
+                                    type: "info",
+                                    message: "删除成功!",
+                                });
+                                this.getOrgListData(this.parentOrgId);
+                                this.getOrgTreeData();
+                            }
                         }
-                    });
+                    );
                 })
-                .catch(() => {
-                    // this.$message({
-                    //     type: 'info',
-                    //     message: '已取消删除'
-                    // });
-                });
         },
         saveOrgData() {
             this.$refs["orgDialogForm"].validate((valid) => {
                 if (valid) {
-                    this.axios
-                        .post("/service-user/org/save", {
+                    var orgData = {
                             id: this.orgDialogFormData.id,
                             parentId: this.parentOrgId,
                             orgName: this.orgDialogFormData.orgName,
-                        })
-                        .then((resp) => {
-                            if (resp.data && resp.data.success) {
+                        };
+                    orgApi.saveOrg(orgData).then(
+                        res => {
+                            if (res.success) {
                                 this.getOrgListData(this.parentOrgId);
                                 this.getOrgTreeData();
                                 this.$message({
                                     message: "保存成功",
                                     type: "info",
                                 });
-                            } else {
-                                this.$message({
-                                    showClose: true,
-                                    message: resp.data.message,
-                                    type: "error",
-                                });
                             }
-                        });
+                        }
+                    );
                     this.orgDialogVisible = false;
                 } else {
                     return false;

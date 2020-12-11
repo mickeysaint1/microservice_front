@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Element from 'element-ui'
 
 const service = axios.create({
 	baseURL: "http://localhost:8040/", // url = base url + request url
@@ -21,7 +22,12 @@ service.interceptors.request.use(
 	error => {
 		console.log(error);
 
-		let resp = {success:false, message:"错误请求：" + error.name};
+		var errorMsg = "错误请求：" + error.name;
+		Element.Message({
+			message: errorMsg,
+			type: "error",
+		});
+		let resp = {success:false, message:errorMsg};
 		return resp;
 	}
 );
@@ -29,6 +35,14 @@ service.interceptors.request.use(
 service.interceptors.response.use(
 	response => {
 		console.log(response);
+
+		if (!response.data.success) {
+			Element.Message({
+				message: response.data.message,
+				type: "error",
+			});
+		}
+
 		return response.data;
 	},
 	error => {
@@ -47,6 +61,10 @@ service.interceptors.response.use(
 			}
 		}
 
+		Element.Message({
+			message: errorMsg,
+			type: "error",
+		});
 		let resp = {success:false, message:errorMsg};
 		return resp;
 	}

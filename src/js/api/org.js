@@ -13,3 +13,19 @@ export function getListDataByParentId(parentId) {
 		method: "post"
 	});
 }
+
+export function deleteOrg(ids) {
+	return request({
+		url: "/service-user/org/delete",
+		method: "post",
+		data: ids
+	});
+}
+
+export function saveOrg(data) {
+	return request({
+		url: "/service-user/org/save",
+		method: "post",
+		data: data
+	});
+}
